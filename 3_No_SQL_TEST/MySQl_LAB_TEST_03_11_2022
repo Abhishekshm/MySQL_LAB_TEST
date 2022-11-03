@@ -1,0 +1,428 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 33
+Server version: 8.0.31 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database companyABC;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use companyABC;
+Database changed
+mysql> create table dept(
+    -> dno int primary key,
+    -> dname varchar(20) not null,
+    -> location varchar(30) not null);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> create table Project(
+    -> pno int primary key,
+    -> pname varchar(20) not null,
+    -> budget float(10,2),
+    -> dno int,
+    -> foreign key(dno) references dept(dno));
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+
+mysql> create table emp(
+    -> eno int primary key,
+    -> ename varchar(20) not null,
+    -> salary float(10,2),
+    -> designation varchar(30) not null,
+    -> pno int,
+    -> foreign key(pno) references project(pno),
+    -> dno int,
+    -> foreign key(dno) references dept(dno));
+Query OK, 0 rows affected, 1 warning (0.58 sec)
+
+mysql> insert into dept values(
+    -> 301,"Developer Team","New Delhi");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into dept values(
+    -> 302,"Testing Team","Mumbai");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into dept values(
+    -> 303,"Managing Team","Chennai");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into project values(
+    -> 201,"Java Desktop",25400,301);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into project values(
+    -> 202,"Java Web",25400,301);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into project values(
+    -> 203,"PHP",35000,302);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into project values(
+    -> 204,"PYthon",45000,303);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into project values(
+    -> 205,"AWS",50000,302);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(
+    -> 101,"Gopal Roy",25000,"Quality Analyst",203,302);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(
+    -> 102,"Harnit Singh",33500,"Developer",201,301);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(
+    -> 103,"Sumit Shaw",15000,"Developer",202,301);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(
+    -> 104,"Raju Ghosh",46000,"Manager",204,303);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into emp values(
+    -> 105,"Prem Shaw",33100,"Quality Analyst",205,302);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(
+    -> 105,"Amit Kumar",67000,"Senior Developer",202,303);
+ERROR 1062 (23000): Duplicate entry '105' for key 'emp.PRIMARY'
+mysql> insert into emp values(
+    -> 106,"Amit Kumar",67000,"Senior Developer",202,303);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into emp values(
+    -> 107,"Ashish Sahu",56000,"Testor",203,302);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(
+    -> 108,"Dipak Ram",55000,"Senior Developer",202,301);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into emp values(
+    -> 109,"Abhishek Sharma",71000,"Manager",205,303);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into emp values(
+    -> 110,"Bijoy Das",45000,"Quality Analyst",202,303);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from emp;
++-----+-----------------+----------+------------------+------+------+
+| eno | ename           | salary   | designation      | pno  | dno  |
++-----+-----------------+----------+------------------+------+------+
+| 101 | Gopal Roy       | 25000.00 | Quality Analyst  |  203 |  302 |
+| 102 | Harnit Singh    | 33500.00 | Developer        |  201 |  301 |
+| 103 | Sumit Shaw      | 15000.00 | Developer        |  202 |  301 |
+| 104 | Raju Ghosh      | 46000.00 | Manager          |  204 |  303 |
+| 105 | Prem Shaw       | 33100.00 | Quality Analyst  |  205 |  302 |
+| 106 | Amit Kumar      | 67000.00 | Senior Developer |  202 |  303 |
+| 107 | Ashish Sahu     | 56000.00 | Testor           |  203 |  302 |
+| 108 | Dipak Ram       | 55000.00 | Senior Developer |  202 |  301 |
+| 109 | Abhishek Sharma | 71000.00 | Manager          |  205 |  303 |
+| 110 | Bijoy Das       | 45000.00 | Quality Analyst  |  202 |  303 |
++-----+-----------------+----------+------------------+------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from dept;
++-----+----------------+-----------+
+| dno | dname          | location  |
++-----+----------------+-----------+
+| 301 | Developer Team | New Delhi |
+| 302 | Testing Team   | Mumbai    |
+| 303 | Managing Team  | Chennai   |
++-----+----------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select e.eno,e.ename,e.designation,d.location
+    -> from emp e
+    -> join dept d
+    -> where e.designation = "Manager" AND d.location="Mumbai";
++-----+-----------------+-------------+----------+
+| eno | ename           | designation | location |
++-----+-----------------+-------------+----------+
+| 104 | Raju Ghosh      | Manager     | Mumbai   |
+| 109 | Abhishek Sharma | Manager     | Mumbai   |
++-----+-----------------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> update emp e
+    -> join project p
+    -> set p.budget=p.budget+(p.budget*01)
+    -> where p.budget>20000;
+Query OK, 5 rows affected (0.04 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from project;
++-----+--------------+-----------+------+
+| pno | pname        | budget    | dno  |
++-----+--------------+-----------+------+
+| 201 | Java Desktop |  50800.00 |  301 |
+| 202 | Java Web     |  50800.00 |  301 |
+| 203 | PHP          |  70000.00 |  302 |
+| 204 | PYthon       |  90000.00 |  303 |
+| 205 | AWS          | 100000.00 |  302 |
++-----+--------------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> alter table project
+    -> add column hours_Needed int;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc project;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| pno          | int         | NO   | PRI | NULL    |       |
+| pname        | varchar(20) | NO   |     | NULL    |       |
+| budget       | float(10,2) | YES  |     | NULL    |       |
+| dno          | int         | YES  | MUL | NULL    |       |
+| hours_Needed | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table project
+    -> rename column pname to Project_Name;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc project;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| pno          | int         | NO   | PRI | NULL    |       |
+| Project_Name | varchar(20) | NO   |     | NULL    |       |
+| budget       | float(10,2) | YES  |     | NULL    |       |
+| dno          | int         | YES  | MUL | NULL    |       |
+| hours_Needed | int         | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select e.eno,e.ename,p.Project_Name,d.location
+    -> from emp e
+    -> join project p
+    -> join dept d
+    -> where p.project_Name="Java Web" And d.location="New Delhi";
++-----+-----------------+--------------+-----------+
+| eno | ename           | Project_Name | location  |
++-----+-----------------+--------------+-----------+
+| 101 | Gopal Roy       | Java Web     | New Delhi |
+| 102 | Harnit Singh    | Java Web     | New Delhi |
+| 103 | Sumit Shaw      | Java Web     | New Delhi |
+| 104 | Raju Ghosh      | Java Web     | New Delhi |
+| 105 | Prem Shaw       | Java Web     | New Delhi |
+| 106 | Amit Kumar      | Java Web     | New Delhi |
+| 107 | Ashish Sahu     | Java Web     | New Delhi |
+| 108 | Dipak Ram       | Java Web     | New Delhi |
+| 109 | Abhishek Sharma | Java Web     | New Delhi |
+| 110 | Bijoy Das       | Java Web     | New Delhi |
++-----+-----------------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select e.eno,e.ename,p.Project_Name,d.location
+    -> from emp e
+    -> join project p
+    -> join dept d
+    -> where p.project_Name="Java Web" AND d.location="New Delhi";
++-----+-----------------+--------------+-----------+
+| eno | ename           | Project_Name | location  |
++-----+-----------------+--------------+-----------+
+| 101 | Gopal Roy       | Java Web     | New Delhi |
+| 102 | Harnit Singh    | Java Web     | New Delhi |
+| 103 | Sumit Shaw      | Java Web     | New Delhi |
+| 104 | Raju Ghosh      | Java Web     | New Delhi |
+| 105 | Prem Shaw       | Java Web     | New Delhi |
+| 106 | Amit Kumar      | Java Web     | New Delhi |
+| 107 | Ashish Sahu     | Java Web     | New Delhi |
+| 108 | Dipak Ram       | Java Web     | New Delhi |
+| 109 | Abhishek Sharma | Java Web     | New Delhi |
+| 110 | Bijoy Das       | Java Web     | New Delhi |
++-----+-----------------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from project
+    -> order by budget desc;
++-----+--------------+-----------+------+--------------+
+| pno | Project_Name | budget    | dno  | hours_Needed |
++-----+--------------+-----------+------+--------------+
+| 205 | AWS          | 100000.00 |  302 |         NULL |
+| 204 | PYthon       |  90000.00 |  303 |         NULL |
+| 203 | PHP          |  70000.00 |  302 |         NULL |
+| 201 | Java Desktop |  50800.00 |  301 |         NULL |
+| 202 | Java Web     |  50800.00 |  301 |         NULL |
++-----+--------------+-----------+------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from dept;
++-----+----------------+-----------+
+| dno | dname          | location  |
++-----+----------------+-----------+
+| 301 | Developer Team | New Delhi |
+| 302 | Testing Team   | Mumbai    |
+| 303 | Managing Team  | Chennai   |
++-----+----------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select p.budget,d.location
+    -> from project p join dept d
+    -> where d.location = "Chennai"
+    -> order by p.budget ASC;
++-----------+----------+
+| budget    | location |
++-----------+----------+
+|  53340.00 | Chennai  |
+|  53340.00 | Chennai  |
+|  73500.00 | Chennai  |
+|  94500.00 | Chennai  |
+| 105000.00 | Chennai  |
++-----------+----------+
+5 rows in set (0.00 sec)
+mysql> select e.ename,e.designation,d.dname
+    -> from emp join dept d
+    -> where e.designation="Senior Developer" AND d.dname="Developer Team";
+ERROR 1054 (42S22): Unknown column 'e.ename' in 'field list'
+mysql> select e.ename,e.designation,d.dname
+    -> from emp e join dept d
+    -> where e.designation="Senior Developer" AND d.dname="Developer Team";
++------------+------------------+----------------+
+| ename      | designation      | dname          |
++------------+------------------+----------------+
+| Amit Kumar | Senior Developer | Developer Team |
+| Dipak Ram  | Senior Developer | Developer Team |
++------------+------------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select d.location,count(p.project_Name)
+    -> from project p join dept d
+    -> where p.project_Name like 'J%' AND d.location = "Chennai";
++----------+-----------------------+
+| location | count(p.project_Name) |
++----------+-----------------------+
+| Chennai  |                     2 |
++----------+-----------------------+
+1 row in set (0.01 sec)
+
+mysql> select d.location,count(p.project_Name) AS "Project Avialable"
+    -> from project p join dept d
+    -> where p.project_Name like 'J%' AND d.location = "Chennai";
++----------+-------------------+
+| location | Project Avialable |
++----------+-------------------+
+| Chennai  |                 2 |
++----------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> select dno,sum(salary) As "Total Salary"
+    -> from emp
+    -> group by dno;
++------+--------------+
+| dno  | Total Salary |
++------+--------------+
+|  301 |    103500.00 |
+|  302 |    114100.00 |
+|  303 |    229000.00 |
++------+--------------+
+3 rows in set (0.01 sec)
+
+mysql> use companyabc;
+Database changed
+mysql> select dno,sum(budget) AS "Total Expenditure"
+    -> from project
+    -> group by dno;
++------+-------------------+
+| dno  | Total Expenditure |
++------+-------------------+
+|  301 |         106680.00 |
+|  302 |         178500.00 |
+|  303 |          94500.00 |
++------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> update project p join dept d
+    -> set p.budget = p.budget+(p.budget*0.05)
+    -> where d.location = "New Delhi";
+Query OK, 5 rows affected (0.05 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from project;
++-----+--------------+-----------+------+--------------+
+| pno | Project_Name | budget    | dno  | hours_Needed |
++-----+--------------+-----------+------+--------------+
+| 201 | Java Desktop |  53340.00 |  301 |         NULL |
+| 202 | Java Web     |  53340.00 |  301 |         NULL |
+| 203 | PHP          |  73500.00 |  302 |         NULL |
+| 204 | PYthon       |  94500.00 |  303 |         NULL |
+| 205 | AWS          | 105000.00 |  302 |         NULL |
++-----+--------------+-----------+------+--------------+
+5 rows in set (0.00 sec)
+
+where p.project_Name like 'Java%' AND d.location = "Chennai"' at line 2
+mysql> select e.ename,p.project_Name,d.location
+    -> from emp e join project p join  dept d
+    -> where p.project_Name like 'Java%' AND d.location = "Chennai";
++-----------------+--------------+----------+
+| ename           | project_Name | location |
++-----------------+--------------+----------+
+| Gopal Roy       | Java Web     | Chennai  |
+| Gopal Roy       | Java Desktop | Chennai  |
+| Harnit Singh    | Java Web     | Chennai  |
+| Harnit Singh    | Java Desktop | Chennai  |
+| Sumit Shaw      | Java Web     | Chennai  |
+| Sumit Shaw      | Java Desktop | Chennai  |
+| Raju Ghosh      | Java Web     | Chennai  |
+| Raju Ghosh      | Java Desktop | Chennai  |
+| Prem Shaw       | Java Web     | Chennai  |
+| Prem Shaw       | Java Desktop | Chennai  |
+| Amit Kumar      | Java Web     | Chennai  |
+| Amit Kumar      | Java Desktop | Chennai  |
+| Ashish Sahu     | Java Web     | Chennai  |
+| Ashish Sahu     | Java Desktop | Chennai  |
+| Dipak Ram       | Java Web     | Chennai  |
+| Dipak Ram       | Java Desktop | Chennai  |
+| Abhishek Sharma | Java Web     | Chennai  |
+| Abhishek Sharma | Java Desktop | Chennai  |
+| Bijoy Das       | Java Web     | Chennai  |
+| Bijoy Das       | Java Desktop | Chennai  |
++-----------------+--------------+----------+
+20 rows in set (0.00 sec)
+
+mysql> select e.ename,p.project_Name,d.location
+    -> from emp e , project p ,  dept d
+    -> where p.project_Name like 'Java%' AND d.location = "Chennai";
++-----------------+--------------+----------+
+| ename           | project_Name | location |
++-----------------+--------------+----------+
+| Gopal Roy       | Java Web     | Chennai  |
+| Gopal Roy       | Java Desktop | Chennai  |
+| Harnit Singh    | Java Web     | Chennai  |
+| Harnit Singh    | Java Desktop | Chennai  |
+| Sumit Shaw      | Java Web     | Chennai  |
+| Sumit Shaw      | Java Desktop | Chennai  |
+| Raju Ghosh      | Java Web     | Chennai  |
+| Raju Ghosh      | Java Desktop | Chennai  |
+| Prem Shaw       | Java Web     | Chennai  |
+| Prem Shaw       | Java Desktop | Chennai  |
+| Amit Kumar      | Java Web     | Chennai  |
+| Amit Kumar      | Java Desktop | Chennai  |
+| Ashish Sahu     | Java Web     | Chennai  |
+| Ashish Sahu     | Java Desktop | Chennai  |
+| Dipak Ram       | Java Web     | Chennai  |
+| Dipak Ram       | Java Desktop | Chennai  |
+| Abhishek Sharma | Java Web     | Chennai  |
+| Abhishek Sharma | Java Desktop | Chennai  |
+| Bijoy Das       | Java Web     | Chennai  |
+| Bijoy Das       | Java Desktop | Chennai  |
++-----------------+--------------+----------+
+20 rows in set (0.02 sec)
+
+mysql>
